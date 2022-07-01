@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "FVVGzz4dGGyhMd3G6kLJxysP/ScJtNVzNpmpVXnaT4o=",
+  "Source": "ListTakeRepositories",
+  "BasePath": "_content/ListTakeRepositories",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}
