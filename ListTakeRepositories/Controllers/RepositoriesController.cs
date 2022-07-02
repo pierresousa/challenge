@@ -1,10 +1,6 @@
 using ListTakeRepositories.Models;
 using Microsoft.AspNetCore.Mvc;
-// using Newtonsoft.Json;
-using System.Threading.Tasks;
-using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Collections.Generic;
 using System.Text.Json;
 using Microsoft.AspNetCore.WebUtilities;
 
@@ -27,31 +23,19 @@ namespace ListTakeRepositories.Controllers
         public async Task<IEnumerable<Repository>> Get([FromQuery]string? user, [FromQuery]string? language)
         {
             user = user ?? "takenet";
-            language = language ?? "takenet";
+            language = language ?? "csharp";
 
-            var repositories = await ListRepositories(user, language);
-            
-            return Enumerable.Range(1, 1).Select(index => new Repository
-            {
-                OwnerOrg = new Owner
-                {
-                    AvatarURL = "https://avatars.githubusercontent.com/u/4369522?v=4"
-                },
-                Name = "takenet/textc-csharp",
-                Description = "Textc is a natural language processing library that allows developers build text command based applications with extensible text parsing capabilities.",
-                CreatedAtUTC = DateTime.Now
-            })
-            .ToArray();
+            return await ListRepositories(user, language);
         }
 
-        public static async Task<List<Repository>> ListRepositories(string user, string language)
+        public static async Task<IEnumerable<Repository>> ListRepositories(string user, string language)
         {
-            var repositories = await ProcessRepositories(user, language);
+            var listRepositories = await ProcessRepositories(user, language);
+            IEnumerable<Repository> repositories = (IEnumerable<Repository>)listRepositories;
 
-            //foreach (var repo in repositories)
-            //    Console.WriteLine(repo.Name);
+            IEnumerable<Repository> query = repositories.OrderBy(repository => repository.Created).Take(5);
 
-            return repositories;
+            return query;
         }
 
         private static async Task<List<Repository>> ProcessRepositories(string user, string language)
@@ -63,7 +47,8 @@ namespace ListTakeRepositories.Controllers
 
             var query = new Dictionary<string, string>()
             {
-                ["q"] = "user:"+user+" language:"+language
+                ["q"] = "user:"+user+" language:"+language,
+                ["per_page"] = "100"
             };
             var uri = QueryHelpers.AddQueryString(GITHUB_URI + "search/repositories", query);
             var streamTask = client.GetStreamAsync(uri);

@@ -14,6 +14,9 @@ namespace ListTakeRepositories.Models
 
         [JsonPropertyName("description")]
         public string Description { get; set; }
+        
+        [JsonPropertyName("language")]
+        public string Language { get; set; }
 
         [JsonPropertyName("created_at")]
         public DateTime CreatedAtUTC { get; set; }
