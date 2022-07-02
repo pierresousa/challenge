@@ -7,8 +7,10 @@ namespace ListTakeRepositories.Models
         [JsonPropertyName("name")]
         public string Name { get; set; }
 
-        [JsonPropertyName("avatar_url")]
-        public string AvatarURL { get; set; }
+        [JsonPropertyName("owner")]
+        public Owner OwnerOrg { get; set; }
+
+        public string AvatarURL => OwnerOrg.AvatarURL;
 
         [JsonPropertyName("description")]
         public string Description { get; set; }
@@ -16,7 +18,7 @@ namespace ListTakeRepositories.Models
         [JsonPropertyName("created_at")]
         public DateTime CreatedAtUTC { get; set; }
 
-        public DateTime LastPush => CreatedAtUTC.ToLocalTime();
+        public DateTime Created => CreatedAtUTC.ToLocalTime();
 
     }
 }
